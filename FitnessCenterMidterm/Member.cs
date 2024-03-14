@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace FitnessCenterMidterm
 {
-    internal abstract class Member
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
+    abstract class Member
+    { //Id and name needed
+        public int Id { get; set; } = 100;
+        public required string Name { get; set; }
 
+        public Member()
+        {
+            Id++;
+        }
+        // Abstract method for checking in
         public abstract void CheckIn(Club club);
     }
 }
