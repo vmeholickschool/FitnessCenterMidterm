@@ -1,29 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FitnessCenterMidterm
+﻿class SingleClubMember : Member
 {
-    class SingleClubMember : Member
-    {  //Variable to assign to a club
-        public required Club AssignedClub { get; set; }
+    public Club Club { get; }
 
-        //Check in method throws an exception if not their club
-        public SingleClubMember():base() 
-        { 
-
-        }
-        public override void CheckIn(Club club)
-        {
-            if (club != AssignedClub)
-            {
-                throw new Exception("You are not assigned to this club.");
-            }
-            Console.WriteLine($"{Name} checked in at {club.Name}.");
-        }
+    public SingleClubMember(string name, Club club) : base(name)
+    {
+        Club = club;
     }
 
+    public override string CheckIn(Club club)
+    {
+        if (club != Club)
+        {
+            throw new Exception("You are not allowed to check-in at this club.");
+        }
+        // Perform check-in actions
+        return base.MembershipNumber;
+    }
 }
-

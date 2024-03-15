@@ -1,13 +1,26 @@
-﻿namespace FitnessCenterMidterm
+﻿using System;
+using System.Collections.Generic;
+
+public class Club
 {
-    public class Club
+    private int membershipId;
+
+    public string Name { get; }
+    public string Address { get; }
+
+    public Club(string name, string address)
     {
-        public string Address { get; set; }
-        public string Name { get; set; }
-        public Club(string name, string address) 
-        { 
-            Name = name;
-            Address = address;
-        }
+        Name = name;
+        Address = address;
+    }
+
+    public Club(int membershipId)
+    {
+        this.membershipId = membershipId;
+    }
+
+    internal void CheckIn(string clubName)
+    {
+        throw new NotImplementedException();
     }
 }
