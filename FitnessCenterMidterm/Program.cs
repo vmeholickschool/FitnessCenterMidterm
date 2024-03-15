@@ -1,9 +1,12 @@
 ﻿
 using FitnessCenterMidterm;
+using System.ComponentModel;
 
-List<Member> members = new List<Member>();
-List<Club> clubs = new List<Club>();
 
+ClubList clubList = new ClubList();
+SingleClubMember single = new SingleClubMember();
+MultiClubMember multi = new MultiClubMember();
+List<SingleClubMember> singleClubMembers = new List<SingleClubMember>();
 
 
 // Main menu
@@ -43,36 +46,48 @@ void AddMember()
     var name = Console.ReadLine();
     Console.WriteLine("Enter 1 for Single Club Member, 2 for Multi-Club Member:");
     var memberType = int.Parse(Console.ReadLine());
+    int counter = 1;
 
-    Member member;
     if (memberType == 1)
     {
+        single.Name = name;
         Console.WriteLine("Select club:");
-        for (int i = 0; i < clubs.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {clubs[i].Name}");
-        }
+        foreach (Club club in clubList.ClubInfo) { Console.WriteLine($"{counter}. {club.Name} - {club.Address}"); }
         int clubIndex = int.Parse(Console.ReadLine()) - 1;
-        member = new SingleClubMember { Id = members.Count + 1, Name = name, AssignedClub = clubs[clubIndex] };
+        single.AssignedClub = clubList.ClubInfo[clubIndex];
+        MemberList singleClub = new MemberList();
+        List<SingleClubMember> singleClubMembers = singleClub.AddSingleClubMember(single);
+        foreach (SingleClubMember singleClubMember in singleClubMembers)
+        {
+            Console.WriteLine(singleClubMember);
+        }
+        Console.WriteLine("Member added successfully.");
     }
     else if (memberType == 2)
     {
-        member = new MultiClubMember { Id = members.Count + 1, Name = name, MembershipPoints = 0 };
+        multi.Name = name;
+        MemberList multiClub = new MemberList();
+        List<MultiClubMember> multiClubMembers = multiClub.AddMultiClubMember(multi);
+        foreach (MultiClubMember multiClubMember in multiClubMembers)
+        {
+            Console.WriteLine(multiClubMember);
+        }
+        Console.WriteLine("Member added successfully.");
     }
     else
     {
-        Console.WriteLine("Invalid member type.");
-        return;
-    }
+        Console.WriteLine("Invalid member type");
 
-    members.Add(member);
-    Console.WriteLine("Member added successfully.");
+    }
 }
+
+
+
 
 // Method to remove a member
 void RemoveMember()
 {
-    Console.WriteLine("Enter member id to remove:");
+    Console.WriteLine("Enter member name:");
     var member = members.Find(m => m.Id == int.Parse(Console.ReadLine()));
     if (member != null)
     {
@@ -88,7 +103,31 @@ void RemoveMember()
 // Method to check a member in
 void CheckMemberIn()
 {
-    Console.WriteLine("Enter member id:");
+    Console.WriteLine("Enter member name:");
+    singleClubMembers = singleClubMembers.Find(x => x.Name == Console.ReadLine().Trim());
+    if(memberName != null)
+    {
+        int counter = 1;
+        Console.WriteLine("What is the member type? Enter 1 for Single Club Member, 2 for Multi-Club Member:");
+        Console.WriteLine("Select a club to check in");
+        foreach (Club clubInfo in clubList.ClubInfo) { Console.WriteLine($"{counter}. {clubInfo.Name} - {clubInfo.Address}"); }
+        int clubIndex = int.Parse(Console.ReadLine()) - 1;
+        var memberType = int.Parse(Console.ReadLine());
+        Club club = new Club(clubList.ClubInfo[clubIndex].Name, clubList.ClubInfo[clubIndex].Address);
+        if (memberType == 1)
+        {
+            
+            single.CheckIn(club);
+
+        }
+        else if (memberType == 2)
+        {
+            multi.CheckIn(club);
+        }
+        
+
+    }
+
     Member member = members.Find(m => m.Id == int.Parse(Console.ReadLine()));
     if (member != null)
     {

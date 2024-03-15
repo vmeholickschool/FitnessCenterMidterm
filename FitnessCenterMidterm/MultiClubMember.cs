@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace FitnessCenterMidterm
 {
-    class MultiClubMember : Member
+    public class MultiClubMember : Member
     {   //variable to store membership points
         public int MembershipPoints { get; set; } = 10;
+        public double MonthlyFees { get; set; } = 280;
         //Check in method adds to their membership points
         public MultiClubMember(): base()
         {

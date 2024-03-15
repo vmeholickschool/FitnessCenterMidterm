@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FitnessCenterMidterm
 {
-    abstract class Member
+    public abstract class Member
     { //Id and name needed
         public int Id { get; set; } = 100;
-        public required string Name { get; set; }
+        public string Name { get; set; }
 
         public Member()
         {

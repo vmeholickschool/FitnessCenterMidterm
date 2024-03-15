@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace FitnessCenterMidterm
 {
-    class SingleClubMember : Member
+    public class SingleClubMember : Member
     {  //Variable to assign to a club
-        public required Club AssignedClub { get; set; }
+        public Club AssignedClub { get; set; }
+        public double MonthlyFees { get; set; } = 200;
 
         //Check in method throws an exception if not their club
         public SingleClubMember():base() 
@@ -17,7 +18,7 @@ namespace FitnessCenterMidterm
         }
         public override void CheckIn(Club club)
         {
-            if (club != AssignedClub)
+            if (club.Name != AssignedClub.Name)
             {
                 throw new Exception("You are not assigned to this club.");
             }
