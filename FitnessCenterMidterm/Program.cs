@@ -2,8 +2,8 @@
 using FitnessCenterMidterm;
 
 List<Member> members = new List<Member>();
-List<Club> clubs = new List<Club>();
 
+ClubList clubList = new ClubList();
 
 
 // Main menu
@@ -48,12 +48,11 @@ void AddMember()
     if (memberType == 1)
     {
         Console.WriteLine("Select club:");
-        for (int i = 0; i < clubs.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {clubs[i].Name}");
-        }
-        int clubIndex = int.Parse(Console.ReadLine()) - 1;
-        member = new SingleClubMember { Id = members.Count + 1, Name = name, AssignedClub = clubs[clubIndex] };
+        clubList.DisplayClubLocations();
+        
+        int clubIndex = int.Parse(Console.ReadLine());
+        member = new SingleClubMember { Id = members.Count + 1, Name = name, AssignedClub = clubList.SelectClubLocation(clubIndex) };
+        
     }
     else if (memberType == 2)
     {
@@ -65,7 +64,7 @@ void AddMember()
         return;
     }
 
-    members.Add(member);
+    //members.Add(member);
     Console.WriteLine("Member added successfully.");
 }
 
@@ -93,12 +92,9 @@ void CheckMemberIn()
     if (member != null)
     {
         Console.WriteLine("Select club to check in:");
-        for (int i = 0; i < clubs.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {clubs[i].Name}");
-        }
+        clubList.DisplayClubLocations();
         var clubIndex = int.Parse(Console.ReadLine()) - 1;
-        Club club = clubs[clubIndex];
+        /*
         try
         {
             member.CheckIn(club);
@@ -107,6 +103,7 @@ void CheckMemberIn()
         {
             Console.WriteLine(ex.Message);
         }
+        */
     }
     else
     {
@@ -136,3 +133,7 @@ static Member NewMethod(List<Member> members, List<Club> clubs, string? name, in
 {
     return new SingleClubMember { Id = members.Count + 1, Name = name, AssignedClub = clubs[clubIndex] };
 }
+
+
+
+
