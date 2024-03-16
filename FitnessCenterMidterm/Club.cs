@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
+//Club class that holds name and address at a minimum
 public class Club
 {
-    private int membershipId;
-
     public string Name { get; }
     public string Address { get; }
 
@@ -12,15 +10,5 @@ public class Club
     {
         Name = name;
         Address = address;
-    }
-
-    public Club(int membershipId)
-    {
-        this.membershipId = membershipId;
-    }
-
-    internal void CheckIn(string clubName)
-    {
-        throw new NotImplementedException();
     }
 }

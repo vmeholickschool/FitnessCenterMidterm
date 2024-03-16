@@ -1,23 +1,18 @@
-﻿abstract class Member
+﻿//Members class to hold member details that will have 2 child classes
+//holds id, name and abstract method void check in at minimum 
+abstract class Member
 {
-    private static int nextId = 1;
-
-    public int Id { get; }
+    public int Id { get; set; }
     public string Name { get; }
     public string MembershipNumber { get; }
+    private static int lastMembershipNumber = 0;
 
     public Member(string name)
     {
-        Id = nextId++;
         Name = name;
-        MembershipNumber = GenerateMembershipNumber();
+        MembershipNumber = (++lastMembershipNumber).ToString(); // Increment and assign the next membership number
     }
 
-    private string GenerateMembershipNumber()
-    {
-        // Generate a unique membership number based on some algorithm
-        return Guid.NewGuid().ToString().Substring(0, 8); // For simplicity, using part of a GUID
-    }
-
-    public abstract string CheckIn(Club club);
+    internal abstract void CheckIn(Club selectedClub);
 }
+public abstract void CheckIn(Club club);
