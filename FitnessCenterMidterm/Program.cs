@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-class Program
-{
+﻿{
     static void Main(string[] args)
     {
         FitnessCenter fitnessCenter = new FitnessCenter();
@@ -20,6 +14,7 @@ class Program
             Console.WriteLine("6. Exit");
             Console.Write("Enter your choice: ");
             string choice = Console.ReadLine();
+
 
             switch (choice)
             {
@@ -46,113 +41,27 @@ class Program
                     break;
             }
         }
+
     }
+
 }
 
-// Represents a fitness center
-class FitnessCenter
+internal class FitnessCenter
 {
     private List<Member> members = new List<Member>();
     private List<Club> clubs = new List<Club>();
-    private List<int> memberIds = new List<int>(); // List to store member IDs
-    private const string MembersFileName = "members.txt";
-    private const string ClubsFileName = "clubs.txt";
 
-    // Constructor to initialize the fitness center
+    public object Members { get; private set; }
+
+    // Constructor and other methods omitted for brevity
     public FitnessCenter()
     {
-        // Load clubs from file or add them manually
+        // Add some clubs
         clubs.Add(new Club("Club A", "Address A"));
         clubs.Add(new Club("Club B", "Address B"));
         clubs.Add(new Club("Club C", "Address C"));
         clubs.Add(new Club("Club D", "Address D"));
     }
-
-    // Save members to a file
-    private void SaveMembers()
-    {
-        using (StreamWriter writer = new StreamWriter(MembersFileName))
-        {
-            foreach (Member member in members)
-            {
-                writer.WriteLine($"{member.Id},{member.Name},{member.GetType().Name},{(member is SingleClubMember singleClubMember ? singleClubMember.Club.Name : "")}");
-            }
-        }
-    }
-
-    // Load members from a file
-    private void LoadMembers()
-    {
-        if (File.Exists(MembersFileName))
-        {
-            using (StreamReader reader = new StreamReader(MembersFileName))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] parts = line.Split(',');
-                    int id = int.Parse(parts[0]);
-                    string name = parts[1];
-                    string type = parts[2];
-                    string clubName = parts.Length > 3 ? parts[3] : null;
-
-                    Member newMember;
-                    switch (type)
-                    {
-                        case "SingleClubMember":
-                            Club club = null;
-                            if (!string.IsNullOrEmpty(clubName))
-                                club = clubs.Find(c => c.Name == clubName);
-                            if (club == null)
-                                throw new InvalidOperationException($"Club '{clubName}' not found.");
-                            newMember = new SingleClubMember(name, club) { Id = id };
-                            break;
-                        case "MultiClubMember":
-                            newMember = new MultiClubMember(name) { Id = id };
-                            break;
-                        default:
-                            throw new InvalidOperationException("Invalid member type found in file.");
-                    }
-                    members.Add(newMember);
-                }
-            }
-        }
-    }
-
-    // Save clubs to a file
-    private void SaveClubs()
-    {
-        using (StreamWriter writer = new StreamWriter(ClubsFileName))
-        {
-            foreach (Club club in clubs)
-            {
-                writer.WriteLine($"{club.Name},{club.Address}");
-            }
-        }
-    }
-
-    // Load clubs from a file
-    private void LoadClubs()
-    {
-        if (File.Exists(ClubsFileName))
-        {
-            using (StreamReader reader = new StreamReader(ClubsFileName))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] parts = line.Split(',');
-                    string name = parts[0];
-                    string address = parts[1];
-                    clubs.Add(new Club(name, address));
-                }
-            }
-        }
-    }
-
-    // Add a new member asks to enter name, select membership type, select club with list of clubs
-    //displays Member added successfully with Membership Number
-    //Should add membership type to the console write line
     public void AddMember()
     {
         Console.Write("Enter member name: ");
@@ -174,13 +83,7 @@ class FitnessCenter
                 }
                 Console.Write("Enter club number: ");
                 int clubIndex = int.Parse(Console.ReadLine()) - 1;
-                if (clubIndex < 0 || clubIndex >= clubs.Count)
-                {
-                    Console.WriteLine("Invalid club number.");
-                    return;
-                }
-                Club selectedClub = clubs[clubIndex];
-                newMember = new SingleClubMember(name, selectedClub);
+                newMember = new SingleClubMember(name, clubs[clubIndex]);
                 break;
             case "2":
                 newMember = new MultiClubMember(name);
@@ -192,113 +95,127 @@ class FitnessCenter
 
         members.Add(newMember);
         Console.WriteLine($"Member added successfully. Membership Number: {newMember.MembershipNumber}");
-        SaveMembers(); // Save the new member to file
     }
 
-   
 
-// Remove a member
-public void RemoveMember()
-{
-    Console.Write("Enter member id to remove: ");
-    int memberId = int.Parse(Console.ReadLine());
-    Member memberToRemove = members.FirstOrDefault(m => m.Id == memberId);
-    if (memberToRemove != null)
+    public BillOfFees GenerateBill()
     {
-        members.Remove(memberToRemove);
-        SaveMembers(); // Save the updated member list to file
-        Console.WriteLine("Member removed successfully.");
-    }
-    else
-    {
-        Console.WriteLine("Member not found.");
-    }
-}
+        Console.WriteLine("Generating bill of fees...");
 
-// Display information of a member
-public void DisplayMemberInformation()
-{
-    Console.Write("Enter member id: ");
-    int memberId = int.Parse(Console.ReadLine());
-    Member member = members.Find(m => m.Id == memberId);
-    if (member != null)
-    {
-        Console.WriteLine($"Member Name: {member.Name}");
-        Console.WriteLine($"Member Type: {member.GetType().Name}");
-        if (member is MultiClubMember multiClubMember)
+        Console.Write("Enter membership number: ");
+        string membershipNumber = Console.ReadLine();
+        Member member = null;
+        foreach (var m in members)
         {
-            Console.WriteLine($"Membership Points: {multiClubMember.MembershipPoints}");
-        }
-    }
-    else
-    {
-        Console.WriteLine("Member not found.");
-    }
-}
-
-// Check a member into a club
-//Check in asks for membership number, select the club to check into, if correct club, check in successful
-public void CheckMemberIn()
-{
-    Console.Write("Enter membership number: ");
-    string memberIdInput = Console.ReadLine();
-
-    if (!int.TryParse(memberIdInput, out int memberId))
-    {
-        Console.WriteLine("Invalid membership number. Please enter a valid number.");
-        return;
-    }
-
-    Member member = members.Find(m => m.Id == memberId);
-    if (member != null)
-    {
-        Console.WriteLine("Select club to check-in:");
-        for (int i = 0; i < clubs.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {clubs[i].Name}");
-        }
-
-        Console.Write("Enter club number: ");
-        if (!int.TryParse(Console.ReadLine(), out int clubIndex) || clubIndex < 1 || clubIndex > clubs.Count)
-        {
-            Console.WriteLine("Invalid club number.");
-            return;
-        }
-        clubIndex--; // Adjusting for zero-based indexing
-
-        Club selectedClub = clubs[clubIndex];
-
-        if (member is SingleClubMember singleClubMember)
-        {
-            if (singleClubMember.Club != selectedClub)
+            if (m.MembershipNumber == membershipNumber)
             {
-                Console.WriteLine("You are not allowed to check-in at this club.");
-                return;
+                member = m;
+                break;
             }
         }
 
-        try
+        if (member != null)
         {
-            member.CheckIn(selectedClub);
-            Console.WriteLine("Check-in successful.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+            // Calculate membership fee and points
+            double membershipFee = 100;
+            int membershipPoints = 0;
+            if (member is MultiClubMember multiClubMember)
+            {
+                membershipPoints = multiClubMember.MembershipPoints;
+            }
 
-        Console.WriteLine("Press any key to return to the main menu...");
-        Console.ReadKey();
+            return new BillOfFees(member, membershipFee, membershipPoints);
+        }
+        else
+        {
+            Console.WriteLine("Member not found.");
+            return null; // Or handle the case where member is not found
+        }
     }
-    else
+
+    public void RemoveMember()
     {
-        Console.WriteLine("Invalid membership number. Please check your membership number and try again.");
+        Console.Write("Enter member id to remove: ");
+        int memberId = int.Parse(Console.ReadLine());
+
+        Member memberToRemove = default(Member);
+
+        foreach (var member in members)
+        {
+            if (member.Id == memberId)
+            {
+                memberToRemove = member;
+                break;
+            }
+        }
+
+        if (memberToRemove != null)
+        {
+            object value = members.Remove(memberToRemove);
+            Console.WriteLine("Member removed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Member not found.");
+        }
+    }
+    public void DisplayMemberInformation()
+    {
+        Console.Write("Enter member id: ");
+        int memberId = int.Parse(Console.ReadLine());
+        Member member = members.Find(m => m.Id == memberId);
+        if (member != null)
+        {
+            Console.WriteLine($"Member Name: {member.Name}");
+            Console.WriteLine($"Member Type: {member.GetType().Name}");
+            if (member is MultiClubMember multiClubMember)
+            {
+                Console.WriteLine($"Membership Points: {multiClubMember.MembershipPoints}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Member not found.");
+        }
+    }
+
+    public void CheckMemberIn()
+    {
+        Console.Write("Enter member id: ");
+        int memberId = int.Parse(Console.ReadLine());
+        Member member = members.Find(m => m.Id == memberId);
+        if (member != null)
+        {
+            Console.WriteLine("Select club to check-in:");
+            for (int i = 0; i < clubs.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {clubs[i].Name}");
+            }
+            Console.Write("Enter club number: ");
+            int clubIndex = int.Parse(Console.ReadLine()) - 1;
+            try
+            {
+                Console.WriteLine($"Check-in successful. Membership Number:{member.MembershipNumber}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Member not found.");
+
+        }
     }
 }
 
 
-internal void GenerateBill()
-{
-    throw new NotImplementedException();
-}
-}
+
+
+
+
+
+
+
+

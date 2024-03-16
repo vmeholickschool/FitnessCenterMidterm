@@ -5,15 +5,23 @@ class MultiClubMember : Member
 {
     public int MembershipPoints { get; private set; }
 
-    public MultiClubMember(string name) : base(name)
+    public MultiClubMember(string name, int membershipNumber) : base(name)
     {
         MembershipPoints = 0;
     }
 
-    public override void CheckIn(Club club)
+    public MultiClubMember(string name, string membershipNumber) : base(name)
+    {
+    }
+
+    public MultiClubMember(string name) : base(name)
+    {
+    }
+
+    public void CheckIn(Club selectedClub)
     {
         // Perform check-in actions here, if needed
-        Console.WriteLine($"Check-in successful at {club.Name} for {Name}");
+        Console.WriteLine($"Check-in successful at {selectedClub.Name} for {Name}");
 
         // Update membership points
         MembershipPoints += 10;

@@ -13,6 +13,8 @@ abstract class Member
         MembershipNumber = (++lastMembershipNumber).ToString(); // Increment and assign the next membership number
     }
 
-    internal abstract void CheckIn(Club selectedClub);
+    public void CheckIn(Club selectedClub)
+    {
+        // Method body goes here
+    }
 }
-public abstract void CheckIn(Club club);
