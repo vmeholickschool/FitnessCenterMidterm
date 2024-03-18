@@ -1,4 +1,7 @@
-﻿{
+﻿public class Program
+
+
+{
     static void Main(string[] args)
     {
         FitnessCenter fitnessCenter = new FitnessCenter();
@@ -14,6 +17,7 @@
             Console.WriteLine("6. Exit");
             Console.Write("Enter your choice: ");
             string choice = Console.ReadLine();
+
 
 
             switch (choice)
@@ -39,6 +43,7 @@
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;
+
             }
         }
 
@@ -71,7 +76,7 @@ internal class FitnessCenter
         Console.WriteLine("2. Multi-Club Member");
         Console.Write("Enter membership type: ");
         string membershipTypeChoice = Console.ReadLine();
-        Console.ReadKey();
+
 
         Member newMember;
         switch (membershipTypeChoice)
@@ -93,6 +98,7 @@ internal class FitnessCenter
                 Console.WriteLine("Invalid membership type.");
                 return;
         }
+        newMember.Id = members.Count + 1;
 
         members.Add(newMember);
         Console.WriteLine($"Member added successfully. Membership Number: {newMember.MembershipNumber}");
@@ -208,6 +214,7 @@ internal class FitnessCenter
             Console.WriteLine("Member not found.");
 
         }
+
     }
 }
 
