@@ -1,6 +1,4 @@
 ﻿using System.Xml.Linq;
-//Second child with a variable to store membership points
-// the check in method adds to the membership points
 class MultiClubMember : Member
 {
     public int MembershipPoints { get; private set; }
@@ -16,17 +14,13 @@ class MultiClubMember : Member
 
     public MultiClubMember(string name) : base(name)
     {
-    }
+     }
 
-    public void CheckIn(Club selectedClub)
-    {
-        // Perform check-in actions here, if needed
-        Console.WriteLine($"Check-in successful at {selectedClub.Name} for {Name}");
+        public void CheckIn(Club selectedClub)
+        {
 
-        // Update membership points
-        MembershipPoints += 10;
+        }
     }
-}
 
 
 

@@ -14,7 +14,7 @@ abstract class Member
 
     public void CheckIn(Club selectedClub)
     {
-        // Method body goes here
+        
     }
 }
 

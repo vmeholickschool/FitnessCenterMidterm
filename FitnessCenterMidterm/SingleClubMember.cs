@@ -6,28 +6,25 @@ using System.Threading.Tasks;
 
 class SingleClubMember : Member
 {
-    private Club club;
+    public Club Club { get; }  
 
-    public Club Club { get; }
-
+    // Constructor to initialize a SingleClubMember with name, club, and membership number
     public SingleClubMember(string name, Club club, int membershipNumber) : base(name)
     {
-        Club = club;
+        Club = club;  // Assign the club passed as a parameter to the Club property
     }
 
-    public SingleClubMember(string name, Club club, string membershipNumber) : base(name)
+    // Constructor to initialize a SingleClubMember with name and club
+    public SingleClubMember(string name, Club club, Func<string> toString) : base(name)
     {
-    }
-
-    public SingleClubMember(string name, Club club) : base(name)
-    {
+        Club = club;  // Assign the club passed as a parameter to the Club property
     }
 
     public void CheckIn(Club selectedClub)
     {
-        if (club == Club)
+        if (selectedClub == Club)
         {
-            Console.WriteLine($"Check-in successful at {club.Name} for {Name}");
+            Console.WriteLine($"Check-in successful at {selectedClub.Name} for {Name}");
         }
         else
         {
@@ -35,4 +32,5 @@ class SingleClubMember : Member
         }
     }
 }
+
 

@@ -94,7 +94,8 @@ internal class FitnessCenter
                 }
                 Console.Write("Enter club number: ");
                 int clubIndex = int.Parse(Console.ReadLine()) - 1;
-                newMember = new SingleClubMember(name, clubs[clubIndex]);
+                string membershipNumber = GenerateMembershipNumber().ToString();// Generate membership number
+                newMember = new SingleClubMember(name, clubs[clubIndex], membershipNumber.ToString);
                 break;
             case "2":
                 newMember = new MultiClubMember(name);
@@ -106,7 +107,7 @@ internal class FitnessCenter
         newMember.Id = members.Count + 1;
 
         members.Add(newMember);
-        Console.WriteLine($"Member added successfully. Membership Number: {newMember.MembershipNumber}");
+        Console.WriteLine($"Member {name} added successfully. Membership Number: {newMember.MembershipNumber}");
     }
 
     internal int GenerateMembershipNumber()
@@ -198,30 +199,37 @@ internal class FitnessCenter
         Member member = members.Find(m => m.Id == memberId);
         if (member != null)
         {
-            Console.WriteLine("Select club to check-in:");
-            for (int i = 0; i < clubs.Count; i++)
+            if (member is SingleClubMember singleClubMember)
             {
-                Console.WriteLine($"{i + 1}. {clubs[i].Name}");
+                // Single club members can only check in to their assigned club
+                Console.WriteLine($"Checking in member {member.Name} at {singleClubMember.Club.Name}");
             }
-            Console.Write("Enter club number: ");
-            int clubIndex = int.Parse(Console.ReadLine()) - 1;
-            try
+            else if (member is MultiClubMember)
             {
-                Console.WriteLine($"Check-in successful. Membership Number:{member.MembershipNumber}");
+                // Multi club members can check in to any club
+                Console.WriteLine("Select club to check-in:");
+                for (int i = 0; i < clubs.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {clubs[i].Name}");
+                }
+                Console.Write("Enter club number: ");
+                int clubIndex = int.Parse(Console.ReadLine()) - 1;
+                Console.WriteLine($"Checking in member {member.Name} at {clubs[clubIndex].Name}");
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Invalid member type.");
             }
         }
         else
         {
             Console.WriteLine("Member not found.");
-
         }
-
     }
+
+
 }
+
 
 
 
