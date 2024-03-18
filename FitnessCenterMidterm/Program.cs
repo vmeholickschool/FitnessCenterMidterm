@@ -137,6 +137,10 @@ internal class FitnessCenter
 
             Console.WriteLine($"Membership Fee: {membershipFee}");
             Console.WriteLine($"Membership Points: {membershipPoints}");
+
+            // Create an instance of BillOfFees and print the bill
+            BillOfFees bill = new BillOfFees(member, membershipFee, membershipPoints);
+            bill.PrintBill();
         }
         else
         {

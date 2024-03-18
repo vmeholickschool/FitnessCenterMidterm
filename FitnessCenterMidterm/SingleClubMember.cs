@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 class SingleClubMember : Member
 {
-    public Club Club { get; }  
+    public Club Club { get; }
 
     // Constructor to initialize a SingleClubMember with name, club, and membership number
     public SingleClubMember(string name, Club club, int membershipNumber) : base(name)
@@ -20,7 +16,7 @@ class SingleClubMember : Member
         Club = club;  // Assign the club passed as a parameter to the Club property
     }
 
-    public void CheckIn(Club selectedClub)
+    public override void CheckIn(Club selectedClub)
     {
         if (selectedClub == Club)
         {
@@ -32,5 +28,6 @@ class SingleClubMember : Member
         }
     }
 }
+
 
 
