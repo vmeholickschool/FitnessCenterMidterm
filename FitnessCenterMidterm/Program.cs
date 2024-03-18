@@ -53,7 +53,7 @@ internal class FitnessCenter
 
     public object Members { get; private set; }
 
-    // Constructor and other methods omitted for brevity
+
     public FitnessCenter()
     {
         // Add some clubs
@@ -71,6 +71,7 @@ internal class FitnessCenter
         Console.WriteLine("2. Multi-Club Member");
         Console.Write("Enter membership type: ");
         string membershipTypeChoice = Console.ReadLine();
+        Console.ReadKey();
 
         Member newMember;
         switch (membershipTypeChoice)
@@ -129,7 +130,7 @@ internal class FitnessCenter
         else
         {
             Console.WriteLine("Member not found.");
-            return null; // Or handle the case where member is not found
+            return null;
         }
     }
 
