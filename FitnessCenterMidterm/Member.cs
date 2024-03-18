@@ -1,5 +1,4 @@
-﻿//Members class to hold member details that will have 2 child classes
-//holds id, name and abstract method void check in at minimum 
+﻿
 abstract class Member
 {
     public int Id { get; set; }
@@ -18,3 +17,4 @@ abstract class Member
         // Method body goes here
     }
 }
+

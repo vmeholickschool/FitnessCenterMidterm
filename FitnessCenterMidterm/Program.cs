@@ -1,4 +1,7 @@
-﻿public class Program
+﻿using FitnessCenterMidterm;
+using Umbraco.Core.Models;
+
+public class Program
 
 
 {
@@ -6,6 +9,8 @@
     {
         FitnessCenter fitnessCenter = new FitnessCenter();
         bool continueRunning = true;
+        List<Member> members = new List<Member>();
+        List<Club> clubs = new List<Club>();
 
         while (continueRunning)
         {
@@ -55,8 +60,8 @@ internal class FitnessCenter
 {
     private List<Member> members = new List<Member>();
     private List<Club> clubs = new List<Club>();
+    private static int lastMembershipNumber = 0;
 
-    public object Members { get; private set; }
 
 
     public FitnessCenter()
@@ -104,41 +109,40 @@ internal class FitnessCenter
         Console.WriteLine($"Member added successfully. Membership Number: {newMember.MembershipNumber}");
     }
 
+    internal int GenerateMembershipNumber()
+    {
+        return ++lastMembershipNumber; // Increment and return the last membership number
+    }
 
-    public BillOfFees GenerateBill()
+    internal int GenerateMemberId()
+    {
+        return members.Count + 1; // Generate and return a new member ID
+    }
+
+
+
+    public void GenerateBill()
     {
         Console.WriteLine("Generating bill of fees...");
 
         Console.Write("Enter membership number: ");
         string membershipNumber = Console.ReadLine();
-        Member member = null;
-        foreach (var m in members)
-        {
-            if (m.MembershipNumber == membershipNumber)
-            {
-                member = m;
-                break;
-            }
-        }
+        Member member = members.Find(m => m.MembershipNumber == membershipNumber);
 
         if (member != null)
         {
-            // Calculate membership fee and points
             double membershipFee = 100;
-            int membershipPoints = 0;
-            if (member is MultiClubMember multiClubMember)
-            {
-                membershipPoints = multiClubMember.MembershipPoints;
-            }
+            int membershipPoints = (member is MultiClubMember multiClubMember) ? multiClubMember.MembershipPoints : 0;
 
-            return new BillOfFees(member, membershipFee, membershipPoints);
+            Console.WriteLine($"Membership Fee: {membershipFee}");
+            Console.WriteLine($"Membership Points: {membershipPoints}");
         }
         else
         {
             Console.WriteLine("Member not found.");
-            return null;
         }
     }
+
 
     public void RemoveMember()
     {
@@ -166,6 +170,7 @@ internal class FitnessCenter
             Console.WriteLine("Member not found.");
         }
     }
+
     public void DisplayMemberInformation()
     {
         Console.Write("Enter member id: ");
@@ -217,6 +222,14 @@ internal class FitnessCenter
 
     }
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,9 @@
-﻿//first child class with a variable to assign them to a club
-//a checkin method that throws an exception if it is not their club
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 class SingleClubMember : Member
 {
     private Club club;
@@ -31,3 +35,4 @@ class SingleClubMember : Member
         }
     }
 }
+

@@ -27,3 +27,6 @@ class MultiClubMember : Member
         MembershipPoints += 10;
     }
 }
+
+
+
