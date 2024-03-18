@@ -132,8 +132,21 @@ internal class FitnessCenter
 
         if (member != null)
         {
-            double membershipFee = 100;
-            int membershipPoints = (member is MultiClubMember multiClubMember) ? multiClubMember.MembershipPoints : 0;
+            double membershipFee = 0;
+            int membershipPoints = 0;
+
+            if (member is MultiClubMember multiClubMember)
+            {
+                // For MultiClubMember, use their specific membership points and fee calculation
+                membershipFee = 100; // Example fee calculation for MultiClubMember
+                membershipPoints = multiClubMember.MembershipPoints;
+            }
+            else if (member is SingleClubMember)
+            {
+                // For SingleClubMember, use a fixed fee and set membership points to 1
+                membershipFee = 50; // Example fixed fee for SingleClubMember
+                membershipPoints = 1;
+            }
 
             Console.WriteLine($"Membership Fee: {membershipFee}");
             Console.WriteLine($"Membership Points: {membershipPoints}");
@@ -147,6 +160,7 @@ internal class FitnessCenter
             Console.WriteLine("Member not found.");
         }
     }
+
 
 
     public void RemoveMember()
