@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FitnessCenterMidterm
+﻿
+abstract class Member
 {
-    abstract class Member
-    { //Id and name needed
-        public int Id { get; set; } = 100;
-        public required string Name { get; set; }
+    public int Id { get; set; }
+    public string Name { get; }
+    public string MembershipNumber { get; }
+    private static int lastMembershipNumber = 0;
 
-        public Member()
-        {
-            Id++;
-        }
-        // Abstract method for checking in
-        public abstract void CheckIn(Club club);
+    public Member(string name)
+    {
+        Name = name;
+        MembershipNumber = (++lastMembershipNumber).ToString(); // Increment and assign the next membership number
     }
+
+    public abstract void CheckIn(Club selectedClub); // Abstract method to be implemented by subclasses
 }
+
+
