@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace FitnessCenterMidterm
 {
@@ -44,6 +45,16 @@ namespace FitnessCenterMidterm
             }
             
             return MultiClubMembers;
+        }
+        public void CheckIn(string name)
+        {
+            MultiClubMember multiClubMemberCheckin = MultiClubMembers.Find(x => x.Name == name);
+            if (multiClubMemberCheckin != null)
+            {
+                multiClubMemberCheckin.MembershipPoints += 10;
+            }
+            ClubList club = new ClubList();
+            Console.WriteLine($"{multiClubMemberCheckin.Name} checked in at {club.Name}. Membership points: {multiClubMemberCheckin.MembershipPoints}");
         }
     }
 

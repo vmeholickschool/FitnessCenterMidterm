@@ -6,7 +6,11 @@ using System.ComponentModel;
 ClubList clubList = new ClubList();
 SingleClubMember single = new SingleClubMember();
 MultiClubMember multi = new MultiClubMember();
+MemberList singleClubList= new MemberList();
+MemberList multiClubList= new MemberList();
 List<SingleClubMember> singleClubMembers = new List<SingleClubMember>();
+List<MultiClubMember> multiClubMembers = new List<MultiClubMember>();
+
 
 
 // Main menu
@@ -25,8 +29,8 @@ while (true)
         case 3:
             CheckMemberIn();
             break;
-        case 4:
-            GenerateBill();
+        /*case 4:
+            GenerateBill();*/
             break;
         case 5:
             Environment.Exit(0);
@@ -52,26 +56,27 @@ void AddMember()
     {
         single.Name = name;
         Console.WriteLine("Select club:");
-        foreach (Club club in clubList.ClubInfo) { Console.WriteLine($"{counter}. {club.Name} - {club.Address}"); }
+        foreach (Club club in clubList.ClubInfo) { Console.WriteLine($"{counter}. {club.Name} - {club.Address}"); counter++; }
         int clubIndex = int.Parse(Console.ReadLine()) - 1;
+        
         single.AssignedClub = clubList.ClubInfo[clubIndex];
         MemberList singleClub = new MemberList();
-        List<SingleClubMember> singleClubMembers = singleClub.AddSingleClubMember(single);
-        foreach (SingleClubMember singleClubMember in singleClubMembers)
+        singleClubMembers = singleClub.AddSingleClubMember(single);
+        /*foreach (SingleClubMember singleClubMember in singleClubMembers)
         {
             Console.WriteLine(singleClubMember);
-        }
+        }*/
         Console.WriteLine("Member added successfully.");
     }
     else if (memberType == 2)
     {
         multi.Name = name;
         MemberList multiClub = new MemberList();
-        List<MultiClubMember> multiClubMembers = multiClub.AddMultiClubMember(multi);
-        foreach (MultiClubMember multiClubMember in multiClubMembers)
+        multiClubMembers = multiClub.AddMultiClubMember(multi);
+       /* foreach (MultiClubMember multiClubMember in multiClubMembers)
         {
             Console.WriteLine(multiClubMember);
-        }
+        }*/
         Console.WriteLine("Member added successfully.");
     }
     else
@@ -87,74 +92,80 @@ void AddMember()
 // Method to remove a member
 void RemoveMember()
 {
-    Console.WriteLine("Enter member name:");
-    var member = members.Find(m => m.Id == int.Parse(Console.ReadLine()));
-    if (member != null)
+    Console.WriteLine("Enter member name to be removed:");
+    string userInputName = Console.ReadLine().Trim();
+    SingleClubMember singleMemberFound = singleClubMembers.Find(x => x.Name == userInputName);
+    MultiClubMember multiMemberFound = multiClubMembers.Find(x => x.Name == userInputName);
+    if (singleMemberFound != null)
     {
-        members.Remove(member);
-        Console.WriteLine("Member removed successfully.");
+        Console.WriteLine($"Are you sure you want to remove member: {userInputName}, Single Club Member? Y/N");
+        if (Console.ReadLine() == "y")
+        {
+            singleClubList.RemoveSingleClubMember(userInputName);
+            Console.WriteLine($"Member {userInputName} has been removed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid input, try again.");
+        }    
     }
-    else
+    else if (multiMemberFound != null)
+    {
+        Console.WriteLine($"Are you sure you want to remove member: {userInputName}, Multi Club Member? Y/N");
+        if (Console.ReadLine() == "y")
+        {
+            multiClubList.RemoveMultiClubMember(userInputName);
+            Console.WriteLine($"Member {userInputName} has been removed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid input, try again.");
+        }
+     
+    }
+    else 
     {
         Console.WriteLine("Member not found.");
     }
+    
 }
 
 // Method to check a member in
 void CheckMemberIn()
 {
     Console.WriteLine("Enter member name:");
-    singleClubMembers = singleClubMembers.Find(x => x.Name == Console.ReadLine().Trim());
-    if(memberName != null)
+    string userInputName = Console.ReadLine().Trim();
+    SingleClubMember singleMemberFound = singleClubMembers.Find(x => x.Name == userInputName);
+    MultiClubMember multiMemberFound = multiClubMembers.Find(x => x.Name == userInputName);
+    if (singleMemberFound != null)
     {
         int counter = 1;
-        Console.WriteLine("What is the member type? Enter 1 for Single Club Member, 2 for Multi-Club Member:");
+        Console.WriteLine($"The member you are checking in is {userInputName}. The membership type is Single Club Member.");
         Console.WriteLine("Select a club to check in");
-        foreach (Club clubInfo in clubList.ClubInfo) { Console.WriteLine($"{counter}. {clubInfo.Name} - {clubInfo.Address}"); }
+        foreach (Club clubInfo in clubList.ClubInfo) { Console.WriteLine($"{counter}. {clubInfo.Name} - {clubInfo.Address}"); counter++; }
         int clubIndex = int.Parse(Console.ReadLine()) - 1;
-        var memberType = int.Parse(Console.ReadLine());
-        Club club = new Club(clubList.ClubInfo[clubIndex].Name, clubList.ClubInfo[clubIndex].Address);
-        if (memberType == 1)
-        {
-            
-            single.CheckIn(club);
-
-        }
-        else if (memberType == 2)
-        {
-            multi.CheckIn(club);
-        }
-        
-
+        Club club = new Club(clubList.ClubInfo[clubIndex].Id,clubList.ClubInfo[clubIndex].Name, clubList.ClubInfo[clubIndex].Address);
+        single.CheckIn(club);
     }
-
-    Member member = members.Find(m => m.Id == int.Parse(Console.ReadLine()));
-    if (member != null)
+    else if (multiMemberFound != null)
     {
-        Console.WriteLine("Select club to check in:");
-        for (int i = 0; i < clubs.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {clubs[i].Name}");
-        }
-        var clubIndex = int.Parse(Console.ReadLine()) - 1;
-        Club club = clubs[clubIndex];
-        try
-        {
-            member.CheckIn(club);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        int counter = 1;
+        Console.WriteLine($"The member you are checking in is {userInputName}. The membership type is Multi Club Member.");
+        Console.WriteLine("Select a club to check in");
+        foreach (Club clubInfo in clubList.ClubInfo) { Console.WriteLine($"{counter}. {clubInfo.Name} - {clubInfo.Address}"); counter++; }
+        int clubIndex = int.Parse(Console.ReadLine()) - 1;
+        Club club = new Club(clubList.ClubInfo[clubIndex].Id, clubList.ClubInfo[clubIndex].Name, clubList.ClubInfo[clubIndex].Address);
+        multi.CheckIn(club);
     }
     else
     {
         Console.WriteLine("Member not found.");
     }
 }
+    
 
 // Method to generate bill of fees
-void GenerateBill()
+/*void GenerateBill()
 {
     Console.WriteLine("Enter member id to generate bill:");
     var id = int.Parse(Console.ReadLine());
@@ -174,4 +185,4 @@ void GenerateBill()
 static Member NewMethod(List<Member> members, List<Club> clubs, string? name, int clubIndex)
 {
     return new SingleClubMember { Id = members.Count + 1, Name = name, AssignedClub = clubs[clubIndex] };
-}
+}*/

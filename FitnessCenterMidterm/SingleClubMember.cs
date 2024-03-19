@@ -18,9 +18,9 @@ namespace FitnessCenterMidterm
         }
         public override void CheckIn(Club club)
         {
-            if (club.Name != AssignedClub.Name)
+            if (club.Id != AssignedClub.Id)
             {
-                throw new Exception("You are not assigned to this club.");
+                Console.WriteLine("The member is not assigned to this club."); ;
             }
             Console.WriteLine($"{Name} checked in at {club.Name}.");
         }
