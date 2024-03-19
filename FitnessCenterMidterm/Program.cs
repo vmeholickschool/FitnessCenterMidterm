@@ -74,6 +74,7 @@ internal class FitnessCenter
     }
     public void AddMember()
     {
+<<<<<<< Updated upstream
         Console.Write("Enter member name: ");
         string name = Console.ReadLine();
         Console.WriteLine("Select membership type:");
@@ -85,6 +86,14 @@ internal class FitnessCenter
 
         Member newMember;
         switch (membershipTypeChoice)
+=======
+        multi.Name = name;
+        MemberList multiClub = new MemberList();
+
+        multiClubMembers=multiClub.AddMultiClubMember(multi);
+        
+       /* foreach (MultiClubMember multiClubMember in multiClubMembers)
+>>>>>>> Stashed changes
         {
             case "1":
                 Console.WriteLine("Select club:");
@@ -109,10 +118,16 @@ internal class FitnessCenter
         members.Add(newMember);
         Console.WriteLine($"Member {name} added successfully. Membership Number: {newMember.MembershipNumber}");
     }
+<<<<<<< Updated upstream
 
     internal int GenerateMembershipNumber()
     {
         return ++lastMembershipNumber; // Increment and return the last membership number
+=======
+    else
+    {
+        Console.WriteLine("Invalid member type");
+>>>>>>> Stashed changes
     }
 
     internal int GenerateMemberId()
@@ -186,12 +201,18 @@ internal class FitnessCenter
         }
         else
         {
+<<<<<<< Updated upstream
             Console.WriteLine("Member not found.");
         }
+=======
+            Console.WriteLine("Invalid input, try again.");
+        }   
+>>>>>>> Stashed changes
     }
 
     public void DisplayMemberInformation()
     {
+<<<<<<< Updated upstream
         Console.Write("Enter member id: ");
         int memberId = int.Parse(Console.ReadLine());
         Member member = members.Find(m => m.Id == memberId);
@@ -248,6 +269,45 @@ internal class FitnessCenter
 
 }
 
+=======
+        Console.WriteLine("Member not found.");
+    } 
+}
+
+// Method to check a member in
+void CheckMemberIn()
+{
+    Console.WriteLine("Enter member name:");
+    string userInputName = Console.ReadLine().Trim();
+    SingleClubMember singleMemberFound = singleClubMembers.Find(x => x.Name == userInputName);
+    MultiClubMember multiMemberFound = multiClubMembers.Find(x => x.Name == userInputName);
+    if (singleMemberFound != null)
+    {
+        int counter = 1;
+        Console.WriteLine($"The member you are checking in is {userInputName}. Membeship ID is {single.Id}. The membership type is Single Club Member.");
+        Console.WriteLine("Select a club to check in");
+        foreach (Club clubInfo in clubList.ClubInfo) { Console.WriteLine($"{counter}. {clubInfo.Name} - {clubInfo.Address}"); counter++; }
+        int clubIndex = int.Parse(Console.ReadLine()) - 1;
+        Club club = new Club(clubList.ClubInfo[clubIndex].Id,clubList.ClubInfo[clubIndex].Name, clubList.ClubInfo[clubIndex].Address);
+        single.CheckIn(club);
+    }
+    else if (multiMemberFound != null)
+    {
+        int counter = 1;
+        Console.WriteLine($"The member you are checking in is {userInputName}. Membeship ID is {single.Id}. The membership type is Multi Club Member.");
+        Console.WriteLine("Select a club to check in");
+        foreach (Club clubInfo in clubList.ClubInfo) { Console.WriteLine($"{counter}. {clubInfo.Name} - {clubInfo.Address}"); counter++; }
+        int clubIndex = int.Parse(Console.ReadLine()) - 1;
+        Club club = new Club(clubList.ClubInfo[clubIndex].Id, clubList.ClubInfo[clubIndex].Name, clubList.ClubInfo[clubIndex].Address);
+        multi.CheckInMultiClub(userInputName,club);
+    }
+    else
+    {
+        Console.WriteLine("Member not found.");
+    }
+}
+    
+>>>>>>> Stashed changes
 
 
 
