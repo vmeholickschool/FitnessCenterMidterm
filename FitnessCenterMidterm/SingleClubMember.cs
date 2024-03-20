@@ -2,32 +2,37 @@
 
 class SingleClubMember : Member
 {
-    public Club Club { get; }
 
+
+
+    public Club AssignedLocation { get; }
+    /*
     // Constructor to initialize a SingleClubMember with name, club, and membership number
-    public SingleClubMember(string name, Club club, int membershipNumber) : base(name)
+    public SingleClubMember(string name, Club assignedLocation, int membershipNumber) : base(name)
     {
-        Club = club;  // Assign the club passed as a parameter to the Club property
-    }
 
+        AssignedLocation = assignedLocation;  // Assign the club passed as a parameter to the Club property
+    }
+    */
     // Constructor to initialize a SingleClubMember with name and club
     public SingleClubMember(string name, Club club, Func<string> toString) : base(name)
     {
-        Club = club;  // Assign the club passed as a parameter to the Club property
+        AssignedLocation = club;  // Assign the club passed as a parameter to the Club property
     }
 
-    public override void CheckIn(Club selectedClub)
+    public override void CheckIn(Club club)
     {
-        if (selectedClub == Club)
+        if (AssignedLocation.Name == club.Name)
         {
-            Console.WriteLine($"Check-in successful at {selectedClub.Name} for {Name}");
+            Console.WriteLine("Member has been checked in!");
+            Console.WriteLine();
         }
         else
         {
-            throw new Exception("You are not allowed to check-in at this club.");
+            Console.WriteLine("This member is not assigned to this club.");
+            Console.WriteLine();
         }
+
     }
 }
-
-
 

@@ -3,6 +3,7 @@
 class MultiClubMember : Member
 {
     public int MembershipPoints { get; private set; }
+    
 
     // Constructor to initialize a MultiClubMember with name, membership number, and initial membership points
     public MultiClubMember(string name, int membershipNumber, int membershipPoints) : base(name)
@@ -29,9 +30,11 @@ class MultiClubMember : Member
     }
 
     // Override the CheckIn method
-    public override void CheckIn(Club selectedClub)
+    public override void CheckIn(Club club)
     {
-        Console.WriteLine($"Check-in successful at {selectedClub.Name} for {Name}");
+       MembershipPoints = MembershipPoints + 10;
+        Console.WriteLine("This member has been checked in!");
+
     }
 }
 

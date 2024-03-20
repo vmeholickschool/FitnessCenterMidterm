@@ -12,17 +12,24 @@ public class Program
         List<Member> members = new List<Member>();
         List<Club> clubs = new List<Club>();
 
+        //welcome statement
+        Console.WriteLine("Welcome to Fitness Forever's Member Information Tracker!");
+        Console.WriteLine();
+        
+      
+
         while (continueRunning)
         {
+            Console.WriteLine("Please select from the options below:");
             Console.WriteLine("1. Add Member");
             Console.WriteLine("2. Remove Member");
             Console.WriteLine("3. Display Member Information");
             Console.WriteLine("4. Check Member In");
             Console.WriteLine("5. Generate Bill of Fees");
             Console.WriteLine("6. Exit");
-            Console.Write("Enter your choice: ");
+            Console.Write("> Enter your choice(1-6): ");
             string choice = Console.ReadLine();
-
+            Console.WriteLine();
 
 
             switch (choice)
@@ -47,6 +54,7 @@ public class Program
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
+                    Console.WriteLine();
                     break;
 
             }
@@ -67,58 +75,69 @@ internal class FitnessCenter
     public FitnessCenter()
     {
         // Add some clubs
-        clubs.Add(new Club("Club A", "Address A"));
-        clubs.Add(new Club("Club B", "Address B"));
-        clubs.Add(new Club("Club C", "Address C"));
-        clubs.Add(new Club("Club D", "Address D"));
+        clubs.Add(new Club("Fitness Forever - Troy", "Address A"));
+        clubs.Add(new Club("Fitness Forever - Saint Clair Shores", "Address B"));
+        clubs.Add(new Club("Fitness Forever - Lake Orion", "Address C"));
+        clubs.Add(new Club("Fitness Forever - Detroit", "Address D"));
     }
     public void AddMember()
     {
-        Console.Write("Enter member name: ");
+        Console.Write("> Type member name: ");
         string name = Console.ReadLine();
+        Console.WriteLine();
+        
         Console.WriteLine("Select membership type:");
         Console.WriteLine("1. Single Club Member");
         Console.WriteLine("2. Multi-Club Member");
-        Console.Write("Enter membership type: ");
+        Console.Write("> Enter membership type: ");
         string membershipTypeChoice = Console.ReadLine();
+        Console.WriteLine();
 
 
         Member newMember;
         switch (membershipTypeChoice)
         {
             case "1":
-                Console.WriteLine("Select club:");
+                Console.WriteLine($"Select club: ");
                 for (int i = 0; i < clubs.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {clubs[i].Name}");
                 }
-                Console.Write("Enter club number: ");
+                
+                Console.Write($"> Enter club number(1-{clubs.Count}): ");
                 int clubIndex = int.Parse(Console.ReadLine()) - 1;
                 string membershipNumber = GenerateMembershipNumber().ToString();// Generate membership number
+                
                 newMember = new SingleClubMember(name, clubs[clubIndex], membershipNumber.ToString);
+                newMember.Id = int.Parse(membershipNumber);
                 break;
             case "2":
                 newMember = new MultiClubMember(name);
+                
                 break;
             default:
                 Console.WriteLine("Invalid membership type.");
+                
                 return;
         }
-        newMember.Id = members.Count + 1;
+        
 
         members.Add(newMember);
-        Console.WriteLine($"Member {name} added successfully. Membership Number: {newMember.MembershipNumber}");
+        Console.WriteLine() ;
+        Console.WriteLine($"Member {name} added successfully. Membership Number: {newMember.Id}");
+        Console.WriteLine();
     }
 
     internal int GenerateMembershipNumber()
     {
         return ++lastMembershipNumber; // Increment and return the last membership number
     }
-
-    internal int GenerateMemberId()
+/*
+   internal int GenerateMemberId()
     {
         return members.Count + 1; // Generate and return a new member ID
     }
+ */
 
 
 
@@ -165,8 +184,9 @@ internal class FitnessCenter
 
     public void RemoveMember()
     {
-        Console.Write("Enter member id to remove: ");
+        Console.Write("> Enter Member Id to remove: ");
         int memberId = int.Parse(Console.ReadLine());
+        Console.WriteLine();
 
         Member memberToRemove = default(Member);
 
@@ -183,46 +203,69 @@ internal class FitnessCenter
         {
             object value = members.Remove(memberToRemove);
             Console.WriteLine("Member removed successfully.");
+            Console.WriteLine();
         }
         else
         {
             Console.WriteLine("Member not found.");
+            Console.WriteLine();
         }
     }
 
     public void DisplayMemberInformation()
     {
-        Console.Write("Enter member id: ");
+        Console.Write("> Enter member id: ");
         int memberId = int.Parse(Console.ReadLine());
+        Console.WriteLine();
+
         Member member = members.Find(m => m.Id == memberId);
         if (member != null)
         {
             Console.WriteLine($"Member Name: {member.Name}");
             Console.WriteLine($"Member Type: {member.GetType().Name}");
+            
+            
+            
+            Console.WriteLine();
             if (member is MultiClubMember multiClubMember)
             {
                 Console.WriteLine($"Membership Points: {multiClubMember.MembershipPoints}");
+                Console.WriteLine();
             }
         }
         else
         {
             Console.WriteLine("Member not found.");
+            Console.WriteLine();
         }
     }
 
     public void CheckMemberIn()
     {
-        Console.Write("Enter member id: ");
+        Console.Write("> Enter member id: ");
         int memberId = int.Parse(Console.ReadLine());
+        Console.WriteLine();
         Member member = members.Find(m => m.Id == memberId);
         if (member != null)
         {
             if (member is SingleClubMember singleClubMember)
             {
-                // Single club members can only check in to their assigned club
-                Console.WriteLine($"Checking in member {member.Name} at {singleClubMember.Club.Name}");
+                // single club members can check in to any club
+                Console.WriteLine("Select club to check-in:");
+                for (int i = 0; i < clubs.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {clubs[i].Name}");
+                }
+                Console.WriteLine();
+
+                Console.Write("> Enter club number: ");
+                int clubIndex = int.Parse(Console.ReadLine()) - 1;
+
+                singleClubMember.CheckIn(clubs[clubIndex]);
+
+
             }
-            else if (member is MultiClubMember)
+            else if (member is MultiClubMember multiClubMember)
             {
                 // Multi club members can check in to any club
                 Console.WriteLine("Select club to check-in:");
@@ -230,18 +273,24 @@ internal class FitnessCenter
                 {
                     Console.WriteLine($"{i + 1}. {clubs[i].Name}");
                 }
-                Console.Write("Enter club number: ");
+               Console.WriteLine();
+
+                Console.Write("> Enter club number: ");
                 int clubIndex = int.Parse(Console.ReadLine()) - 1;
-                Console.WriteLine($"Checking in member {member.Name} at {clubs[clubIndex].Name}");
+
+                Console.WriteLine();
+                multiClubMember.CheckIn(clubs[clubIndex]);
             }
             else
             {
                 Console.WriteLine("Invalid member type.");
+                Console.WriteLine();
             }
         }
         else
         {
             Console.WriteLine("Member not found.");
+            Console.WriteLine();
         }
     }
 
