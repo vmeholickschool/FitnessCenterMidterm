@@ -33,7 +33,7 @@ class MultiClubMember : Member
     public override void CheckIn(Club club)
     {
        MembershipPoints = MembershipPoints + 10;
-        Console.WriteLine("This member has been checked in!");
+        Console.WriteLine($"Member {Name}, has been checked in!");
 
     }
 }

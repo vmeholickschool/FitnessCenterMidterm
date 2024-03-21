@@ -24,12 +24,13 @@ class SingleClubMember : Member
     {
         if (AssignedLocation.Name == club.Name)
         {
-            Console.WriteLine("Member has been checked in!");
+            Console.WriteLine();
+            Console.WriteLine($"Member {Name}, has been checked in!");
             Console.WriteLine();
         }
         else
         {
-            Console.WriteLine("This member is not assigned to this club.");
+            Console.WriteLine($"Member {Name}, is not assigned to this club.");
             Console.WriteLine();
         }
 
