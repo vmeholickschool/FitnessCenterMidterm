@@ -18,5 +18,6 @@
         Console.WriteLine($"Bill for {Member.Name} generated on {DateGenerated}:");
         Console.WriteLine($"Membership Fee: ${Fee}");
         Console.WriteLine($"Membership Points: {MembershipPoints}");
+        Console.WriteLine();
     }
 }
